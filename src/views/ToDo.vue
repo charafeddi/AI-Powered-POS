@@ -16,25 +16,43 @@
                         <div class="card-body">
                             <div class="todo-sidebar">
                                 <div class="todo-new-task">
-                                    <button class="btn btn-primary btn-block" @click="showModal(true)">Create New Task</button>
+                                    <button class="btn btn-primary btn-block" @click="showModal(null)">
+                                          Create New Task
+                                    </button>
+                                     <!-- Task Modal -->
+                                    <div v-if="modalOpen" class="modal fade show"   id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="display: block;">
+                                        <div class="modal-dialog modal-dialog-centered" role="document" >
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">{{ editingTask ? 'Edit Task' : 'New Task' }}</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="showModal(null)">
+                                                        <i class="material-icons">close</i>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form @submit.prevent="editingTask ? updateTask() : addTask()">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" v-model="taskForm.text" placeholder="Task Name" required>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" @click="showModal(null)">Cancel</button>
+                                                            <button type="submit" class="btn btn-primary">{{ editingTask ? 'Update' : 'Add' }}</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="todo-menu">
                                     <!-- Menu items (filtering can be implemented here) -->
                                     <ul class="list-unstyled">
-                                        <li class="active"><a href="#"><i class="fas fa-bars"></i>All</a></li>
-                                        <li><a href="#"><i class="fas fa-check"></i>Completed</a></li>
-                                        <li><a href="#"><i class="fas fa-trash"></i>Deleted</a></li>
+                                        <li class="active"><a href="#" @click="all"><i class="fas fa-bars"></i>All</a></li>
+                                        <li><a href="#" @click="showCompletedTasks"><i class="fas fa-check"></i>Completed</a></li>
+                                        <li><a href="#" @click="showDeletedTask"><i class="fas fa-trash"></i>Deleted</a></li>
                                     </ul>
                                 </div>
-                                <div class="divider"></div>
-                                <div class="todo-search">
-                                    <!-- Search (filter tasks) -->
-                                    <form>
-                                        <div class="input-group">
-                                            <input type="text" id="todo-search" class="form-control" placeholder="Search task">
-                                        </div>
-                                    </form>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -45,13 +63,18 @@
                     <div class="card-body">
                         <div class="todo-list">
                         <ul class="list-unstyled">
-                            <li v-for="(task, index) in tasks" :key="index">
-                            <a href="javascript:void(0);" class="custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" :id="'task' + task.id" v-model="task.completed">
-                                <label class="custom-control-label" :for="'task' + task.id">{{ task.text }}</label>
-                            </a>
-                            <button @click="showModal(true, task)">Edit</button>
-                            <button @click="deleteTask(task.id)">Delete</button>
+                            <li class="d-flex align-items-center justify-content-between" v-for="(task, index) in Tasks.data" :key="index">
+                                <a href="javascript:void(0);" style="text-decoration: none" class="custom-checkbox" :class="task.aClass" :for="'task' + task.id">
+                                    <input type="checkbox" class="custom-control-input" @click="toggleTaskCompletion(task)" :id="'task' + task.id" v-model="task.completed">
+                                    <label class="custom-control-label"></label>
+                                    {{ task.text }}
+                                </a>
+                                <div>
+                                    <span class="btn" @click="showModal(task)">
+                                        <i class="fas fa-edit"></i>
+                                    </span>                                      
+                                    <span class='btn' @click="deleteTask(task.id)"><i class="fas fa-trash"></i></span>
+                                </div>
                             </li>
                         </ul>
                         </div>
@@ -60,87 +83,155 @@
                 </div>
             </div>
         </div>
-      <!-- Task Modal -->
-        <div class="modal fade" id="taskModal" tabindex="-1" role="dialog" v-if="modalOpen">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">{{ editingTask ? 'Edit Task' : 'New Task' }}</h5>
-                        <button type="button" class="close" @click="showModal(false)">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form @submit.prevent="editingTask ? updateTask() : addTask()">
-                            <div class="form-group">
-                                <input type="text" class="form-control" v-model="taskForm.text" placeholder="Task Name" required>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" @click="showModal(false)">Cancel</button>
-                                <button type="submit" class="btn btn-primary">{{ editingTask ? 'Update' : 'Add' }}</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+     
     </div>
 </template>
   
 <script>
+import {mapActions, mapGetters} from 'vuex';
   export default {
     name: "ToDo",
+    props:['id'],
     data() {
       return {
-        tasks: [],
         modalOpen: false,
-        taskForm: { text: '' },
-        editingTask: null
+        taskForm: { text: '',completed:false },
+        editingTask: null,
+        searchTerm:''
       };
     },
+    computed:{
+        ...mapGetters({
+            'Tasks':'todo/getTodos'
+        })
+    },
     methods: {
+        ...mapActions({
+            'importTodos':'todo/importTodos',
+            'addTaskInDB' : 'todo/addNewTask',
+            'deleteTaskInDB': 'todo/deleteTask',
+            'updateTaskInDB': 'todo/UpdateTask',
+            'ImportTrushed': 'todo/ImportTrushedTask',
+            'ImportFinished': 'todo/ImportFinishedTask',
+        }),
         showAlert(){
             alert("clicked");
         },
-        showModal(open, task = null) {
-                console.log("am here");
-                this.modalOpen = open;
-                if (open && task) {
-                    this.taskForm.text = task.text;
-                    this.editingTask = task;
-                } else {
-                    this.taskForm.text = '';
-                    this.editingTask = null;
-                }
+        toggleTaskCompletion(task) {
+            task.completed = !task.completed;
+            task.aClass = task.completed ? 'done' : '';
+            
+            if (!task || !task.id) {
+                console.error('Invalid task object:', task);
+                return;
+            }
+            // rest of the method logic
+
+            this.updateTaskInDB({
+                id: task.id,
+                task: task.text,
+                done: task.completed,
+                user_id: this.id,
+            })
+            .then((response) => {
+                    if (response.status === 201) {
+                    this.importTodos(this.id);
+                    } else {
+                    console.log('failed to update task :', response);
+                    }
+                })
+                .catch((error) => {
+                    console.log('Error while updating task', error);
+                });
+        },
+        showModal(task = null) {
+        this.modalOpen = !this.modalOpen;
+
+            if (task) {
+                this.editingTask = task;
+                this.taskForm.text = task.text;
+            } else {
+                this.editingTask = null;
+                this.taskForm.text = '';
+            }
         },
         addTask() {
             if (this.taskForm.text.trim()) {
                 const newTask = {
-                    id: Date.now(),
-                    text: this.taskForm.text,
-                    completed: false
+                    task: this.taskForm.text,
+                    done: false,
+                    user_id: this.id,
                 };
-                this.tasks.push(newTask);
-                this.showModal(false);
+                this.addTaskInDB(newTask)
+                .then((response)=>{
+                    if (response.status === 201) {
+                        this.importTodos(this.id);
+                    } else {
+                        console.log('failed to add task :', response);
+                    }               
+                })
+                .catch((error)=>{
+                    console.log('Error while adding task', error);
+                });
+
+                this.showModal();
             }
         },
         updateTask() {
             if (this.editingTask && this.taskForm.text.trim()) {
-                this.editingTask.text = this.taskForm.text;
-                this.showModal(false);
+                const updatedTask = {
+                    id: this.editingTask.id,
+                    task: this.taskForm.text,
+                    done: this.taskForm.completed,
+                    user_id: this.id,
+                };
+
+                this.updateTaskInDB(updatedTask)
+                .then((response) => {
+                    if (response.status === 201) {
+                    this.importTodos(this.id);
+                    } else {
+                    console.log('failed to update task :', response);
+                    }
+                })
+                .catch((error) => {
+                    console.log('Error while updating task', error);
+                });
+
+                this.showModal();
             }
         },
         deleteTask(id) {
-            const index = this.tasks.findIndex(t => t.id === id);
-            if (index !== -1) {
-                this.tasks.splice(index, 1);
-            }
-        }
-    }
+            this.deleteTaskInDB(id).then((response)=>{
+                if (response.status === 201) {
+                    this.importTodos(this.id);
+                } else {
+                    console.log('failed to delete task', response);
+                }
+            }).catch((error)=>{
+                console.log('Error while deleting the task', error);
+            })
+        },
+        showDeletedTask(){
+            this.ImportTrushed(this.id);
+        },
+        showCompletedTasks(){
+            this.ImportFinished(this.id);
+        },
+        all(){
+            this.importTodos(this.id);
+        },
+    },
+    created() {
+        this.importTodos(this.id);
+    },
   };
 </script>
-  
-<style scoped>
-  /* Add your styles here */
+
+<style>
+    @import '@/assets/plugins/css/close.css';
+    @import '@/assets/plugins/css/modal.css';
+    @import '@/assets/plugins/css/reboot.css';
+    @import '@/assets/plugins/css/flex.css';
+    @import '@/assets/plugins/css/display.css';
 </style>
-  

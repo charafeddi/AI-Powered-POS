@@ -19,7 +19,12 @@
             </div>
         </div>
         <div class="main-wrapper">
-            <Table :arrayProp="product" @modify-array="onModifyArray"/>
+            <div v-if="loading">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+            <Table v-else :arrayProp="products" @modify-array="onModifyArray"/>
             <div class="row" v-show="showSubmitButton">
                 <div class="col">
                     <div class="card">
@@ -35,6 +40,7 @@
 
 <script>
 import Table from '@/components/Table.vue'
+import {mapGetters, mapActions} from 'vuex'
 export default {
     name: 'Product',
     components: {
@@ -42,54 +48,12 @@ export default {
     },
     data() {
         return {
+            loading: true,
             isOpen: false,
             showSubmitButton: false,
-            product: [
-                {
-                    id: '1000',
-                    code: 'f230fh0g3',
-                    name: 'Bamboo Watch',
-                    description: 'Product Description',
-                    image: 'bamboo-watch.jpg',
-                    price: 65,
-                    category: 'Accessories',
-                    quantity: 24,
-                    discount:15.00,
-                    inventoryStatus: 'INSTOCK',
-                    subtotal: 600,
-                    rating: 5
-                },
-                {
-                    id: '100',
-                    code: 'f230fhdfg3',
-                    name: 'Black Watch',
-                    description: 'Product Description',
-                    image: 'Black-Watch.jpg',
-                    price: 120,
-                    category: 'Accessories',
-                    quantity: 45,
-                    discount:15.00,
-                    inventoryStatus: 'INSTOCK',
-                    subtotal: 200,
-                    rating: 5
-                },
-                {
-                    id: '170',
-                    code: 'dfsafh0g3',
-                    name: 'Blue Band',
-                    description: 'Product Description',
-                    image: 'Blue-Band.jpg',
-                    price: 88,
-                    category: 'Accessories',
-                    quantity: 44,
-                    discount:15.00,
-                    inventoryStatus: 'INSTOCK',
-                    subtotal: 400,
-                    rating: 5
-                },
-            ]
         }
     },
+    props:['id'],
     mounted() {
         document.addEventListener('click', this.handleOutsideClick);
     },
@@ -97,6 +61,9 @@ export default {
         document.removeEventListener('click', this.handleOutsideClick);
     },
     methods: {
+        ...mapActions({
+            'ImportProducts' : 'product/importProducts'
+        }),
         onModifyArray() {
             this.showSubmitButton = true;
         },
@@ -113,6 +80,16 @@ export default {
                 this.isOpen = false;
             }
         },
+    },
+    created() {
+        this.ImportProducts(this.id).finally(() => {
+            this.loading = false;
+        });
+    },
+    computed:{
+        ...mapGetters({
+            'products' : 'product/products'
+        })
     }
 }
 </script>

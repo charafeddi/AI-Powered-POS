@@ -40,10 +40,7 @@
                     <a href="#" class="nav-link">Projects</a>
                 </li> 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Tasks</a>
-                </li>
-                <li class="nav-item">   
-                    <a href="#" class="nav-link">Reports</a>
+                    <router-link :to="{name:ToDo, params:{id:user.id}}" class="nav-link">Tasks</router-link>
                 </li>
             </ul>
         </div>

@@ -1,4 +1,4 @@
-<template lang="">
+<template>
     <div class="page-content">
         <div class="main-wrapper">
             <div class="row">
@@ -9,22 +9,21 @@
                         </div>
                     </div>
                     <div v-else class="card">
-                        <div  class="card-header">
+                        <div class="card-header">
                             <div class="input-group input-group-sm">
-                            <input type="text" v-model="filters['global'].value" class="form-control" style="width: 200px;" placeholder="Search...">
-                            <span class="input-group-append">
+                              <input type="text" v-model="filters['global'].value" class="form-control" style="width: 200px;" placeholder="Search...">
+                              <span class="input-group-append">
                                 <button type="button" class="btn btn-secondary mr-2" @click="clearFilter">
-                                <i class="fas fa-times"></i>
+                                  <i class="fas fa-times"></i>
                                 </button>
                                 &nbsp;
-                                <router-link class="btn btn-success" :to="{name:'AddSupplier'}"> Add Supplier
-                                    <i class="fa-solid fa-plus"></i>
-                                </router-link>
-                            </span>
+                                <router-link class="btn btn-success" :to="{name:'CustomersAdd'}"> Add Customer
+                                  </router-link>
+                              </span>
                             </div>
                         </div> 
-                        <div class="card-body">
-                            <DataTable :value="suppliers" :fliters="filters" filterDisplay="menu" :filterBy="filterBy" tableStyle="min-width: 50rem">
+                        <div  class="card-body">
+                            <DataTable :value="customers.data" :fliters="filters" :filterBy="filterBy" tableStyle="min-width: 50rem">
                                 <Column field="name" header="Name"></Column>
                                 <Column field="email" header="Email"></Column>
                                 <Column field="phone" header="Phone"></Column>
@@ -32,8 +31,11 @@
                                 <Column field="city" header="City"></Column>
                                 <Column header="Action">
                                     <template #body="slotProps">
-                                        <router-link :to="{name: 'UpdateSupplier', params:{ id: slotProps.data.id}}" class="btn btn-success"><i class="fa-regular fa-pen-to-square"></i></router-link>
-                                        <button @click="deleteSupplier(slotProps.data.id)" class="btn btn-danger"><i class="fa-regular fa-trash-can"></i> </button>
+                                        <router-link :to="{name: 'CustomersUpdate', params:{ id: slotProps.data.id}}" class="btn btn-success"><i class="fa-regular fa-pen-to-square"></i></router-link>
+                                        &nbsp;
+                                        <button @click="deleteSupplier(slotProps.data.id)" class="btn btn-danger">
+                                            <i class="fa-regular fa-trash-can"></i>
+                                        </button>
                                     </template>
                                 </Column>
                             </DataTable>
@@ -47,9 +49,9 @@
 <script>
 import DataTable from 'primevue/datatable/DataTable.vue';
 import Column from 'primevue/column/Column.vue';
-import {mapActions, mapGetters} from 'vuex'
+import {mapActions, mapGetters} from 'vuex';
 export default {
-    name:'ListOfSupplier',
+    name:'SupplierList',
     components:{
         DataTable,
         Column
@@ -57,7 +59,7 @@ export default {
     props:['id'],
     data() {
         return {
-            suppliers:[],
+            // customers:[],
             loading:true,
             filters: {
                 'global': { value: null, matchMode: 'contains' }
@@ -66,20 +68,20 @@ export default {
     },
     computed:{
         ...mapGetters({
-            'suppliersData':'supplier/getSuppliers',
+            'customers': 'customers/getCustomers',
         }),
     },
     methods: {
         ...mapActions({
-            'importSuppliers': 'supplier/importSuppliers'
+            'importCustomers' : 'customers/importCustomers',
         }),
-        filterBy(value, filter) {
+        filterBy(product, filter) {
             if (filter['global'].value) {
                 return (
-                value.phone.toLowerCase().includes(filter['global'].value.toLowerCase()) ||
-                value.name.toLowerCase().includes(filter['global'].value.toLowerCase()) ||
-                value.address.toLowerCase().includes(filter['global'].value.toLowerCase()) ||
-                value.email.toLowerCase().includes(filter['global'].value.toLowerCase())
+                    supplier.phone.toLowerCase().includes(filter['global'].value.toLowerCase()) ||
+                    supplier.name.toLowerCase().includes(filter['global'].value.toLowerCase()) ||
+                    supplier.address.toLowerCase().includes(filter['global'].value.toLowerCase()) ||
+                    supplier.email.toLowerCase().includes(filter['global'].value.toLowerCase())
                 );
             }
             return true;
@@ -89,10 +91,10 @@ export default {
         },
     },
     created() {
-        this.importSuppliers(this.id).finally(() => {
-            this.loading = false;
-        });
-        this.suppliers = this.suppliersData.data;
+        this.importCustomers(this.id).finally(() => {
+            this.loading=false;
+            }
+        );
     },
 }
 </script>

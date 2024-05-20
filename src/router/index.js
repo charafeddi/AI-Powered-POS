@@ -20,7 +20,18 @@ import UpdateSupplier from '../views/supplier/UpdateSupplier.vue'
 import Singin from '../views/authentication/Signin.vue'
 import Singup from '../views/authentication/Signup.vue'
 
-//Pages
+// Customers 
+import CustomersList from '../views/customeres/CustomersList.vue'
+import CustomersAdd from '../views/customeres/AddCustomer.vue'
+import CustomersUpdate from '../views/customeres/UpdateCustomer.vue'
+
+// Sales 
+import SalesList from '../views/sales/SalesList.vue'
+import SalesAdd from '../views/sales/AddSales.vue'
+import showSale from '../views/sales/showSale.vue'
+import SalesUpdate from '../views/sales/UpdateSales.vue'
+
+//Pages Not Found
 import NotFound from '../views/NotFound'
 
 const routes =[
@@ -36,9 +47,10 @@ const routes =[
         }
     },
     {
-        path:'/product',
+        path:'/product/:id',
         name:'Product',
         component:Product,
+        props:true,
         beforeEnter: (to, from, next) => {
             if (!store.getters['auth/authenticated']) {
                 return next({name: 'Signin'})
@@ -58,9 +70,10 @@ const routes =[
         }
     },
     {
-        path:'/todo',
+        path:'/todo/:id',
         name:'ToDo',
         component:ToDo,
+        props:true,
         beforeEnter: (to, from, next) => {
             if (!store.getters['auth/authenticated']) {
                 return next({name: 'Signin'})
@@ -92,9 +105,10 @@ const routes =[
         }
     },
     {
-        path:'/supplierList',
+        path:'/supplierList/:id',
         name:'supplierList',
         component: supplierList,
+        props:true,
         beforeEnter: (to, from, next) => {
             if (!store.getters['auth/authenticated']) {
                 return next({name: 'Signin'})
@@ -116,17 +130,111 @@ const routes =[
     {
         path:'/Signin',
         name:'Signin',
-        component: Singin
+        component: Singin,
+        beforeEnter: (to, from, next) => {
+            if (store.getters['auth/authenticated']) {
+                return next({name: 'DashBoard'})
+            }
+            next()
+        }
     },
     {
         path:'/Signup',
         name:'Signup',
-        component: Singup
+        component: Singup,
+        beforeEnter: (to, from, next) => {
+            if (store.getters['auth/authenticated']) {
+                return next({name: 'DashBoard'})
+            }
+            next()
+        }
     },
     {
         path:'/UpdateSupplier/:id',
         name:'UpdateSupplier',
         component: UpdateSupplier,
+        props:true,
+        beforeEnter: (to, from, next) => {
+            if (!store.getters['auth/authenticated']) {
+                return next({name: 'Signin'})
+            }
+            next()
+        }
+    },
+    {
+        path:'/Customers/:id',
+        name:'CustomersList',
+        component: CustomersList,
+        props:true,
+        beforeEnter: (to, from, next) => {
+            if (!store.getters['auth/authenticated']) {
+                return next({name: 'Signin'})
+            }
+            next()
+        }
+    },
+    {
+        path:'/CustomersUp/:id',
+        name:'CustomersUpdate',
+        component: CustomersUpdate,
+        props:true,
+        beforeEnter: (to, from, next) => {
+            if (!store.getters['auth/authenticated']) {
+                return next({name: 'Signin'})
+            }
+            next()
+        }
+    },
+    {
+        path:'/Customers',
+        name:'CustomersAdd',
+        component: CustomersAdd,
+        beforeEnter: (to, from, next) => {
+            if (!store.getters['auth/authenticated']) {
+                return next({name: 'Signin'})
+            }
+            next()
+        }
+    },
+    {
+        path:'/Sales/:id',
+        name:'SalesList',
+        component: SalesList,
+        props:true,
+        beforeEnter: (to, from, next) => {
+            if (!store.getters['auth/authenticated']) {
+                return next({name: 'Signin'})
+            }
+            next()
+        }
+    },
+    {
+        path:'/Sales/update/:id',
+        name:'SalesUpdate',
+        component: SalesUpdate,
+        props:true,
+        beforeEnter: (to, from, next) => {
+            if (!store.getters['auth/authenticated']) {
+                return next({name: 'Signin'})
+            }
+            next()
+        }
+    },
+    {
+        path:'/Sales',
+        name:'SalesAdd',
+        component: SalesAdd,
+        beforeEnter: (to, from, next) => {
+            if (!store.getters['auth/authenticated']) {
+                return next({name: 'Signin'})
+            }
+            next()
+        }
+    },
+    {
+        path:'/Sales/show/:id',
+        name:'showSale',
+        component: showSale,
         props:true,
         beforeEnter: (to, from, next) => {
             if (!store.getters['auth/authenticated']) {

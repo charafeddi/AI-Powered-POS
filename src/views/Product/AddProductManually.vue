@@ -17,15 +17,36 @@
   
   <script>
   import ProductForm from '@/components/forms/ProductForm.vue'
+  import {mapActions} from 'vuex';
   export default {
     name:"AddProductManually",
     components:{
       ProductForm
     },
     methods: {
+      ...mapActions({
+        'addProduct': 'product/AddProduct'
+      }),
         submitForm(product) {
-            // Here you can perform actions like sending the form data to a server
-            console.log('Form submitted:', product);
+            // Here you can perform actions like sending the form data to a server        
+            this.addProduct({
+              'products': [product]
+            }).then((response) => {
+              if (response.status === 201) {
+                this.$router.push({
+                  name: 'Product',
+                  params:{
+                    id:product.user_id
+                  }
+                });
+              } else {
+                  // Handle the error or display a message to the user
+                  console.error("Failed to add product:", response);
+              }
+            }).catch((error) => {
+               // Handle the error or display a message to the user
+               console.error("Error while adding product:", error);   
+            });
         },
     }
   };

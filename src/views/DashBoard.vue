@@ -9,7 +9,7 @@
             </nav>
             <div class="page-options">
                 <a href="#" class="btn btn-secondary">Settings</a>
-                <a href="#" class="btn btn-primary">Upgrade</a>
+                <a href="#" class="btn btn-primary">Add Sale</a>
             </div>
         </div>
         <div class="main-wrapper">

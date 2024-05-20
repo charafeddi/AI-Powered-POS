@@ -1,0 +1,33 @@
+.close {
+    float: right;
+    font-size: 1.5rem; /* Replace with the value of $close-font-size */
+    font-weight: 700; /* Replace with the value of $close-font-weight */
+    line-height: 1;
+    color: #000; /* Replace with the value of $close-color */
+    text-shadow: 0 1px 0 #fff; /* Replace with the value of $close-text-shadow */
+    opacity: .5;
+  }
+  
+  .close:hover {
+    color: #000; /* Replace with the value of $close-color */
+    text-decoration: none;
+  }
+  
+  .close:not(:disabled):not(.disabled):hover,
+  .close:not(:disabled):not(.disabled):focus {
+    opacity: .75;
+  }
+  
+  /* Additional properties for button version */
+  button.close {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    appearance: none;
+  }
+  
+  /* Future-proof disabling of clicks on <a> elements */
+  a.close.disabled {
+    pointer-events: none;
+  }
+  

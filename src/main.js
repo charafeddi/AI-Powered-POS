@@ -7,7 +7,6 @@ import axios from 'axios'
 
 axios.defaults.baseURL = 'http://127.0.0.1:8000/api/';
 
-
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
 import '@fortawesome/fontawesome-free/css/all.css';

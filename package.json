@@ -22,9 +22,9 @@
     "to": "^0.2.9",
     "vue": "^3.2.13",
     "vue-apexcharts": "^1.6.2",
-    "vue-core-image-upload": "^2.4.14",
     "vue-router": "^4.3.2",
     "vue2-perfect-scrollbar": "^1.2.0",
+    "vue3-perfect-scrollbar": "^2.0.0",
     "vuex": "^4.1.0",
     "your": "^0.2.3"
   },

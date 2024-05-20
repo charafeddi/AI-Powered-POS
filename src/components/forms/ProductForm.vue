@@ -1,64 +1,51 @@
 <template lang="">
-    <form @submit.prevent="$emit('submit', product)">
+    <form @submit.prevent="$emit('submit', this.product)">
+        <input type="text" v-model="product.id" hidden>
         <div class="form-row align-items-end">
-            <div class="form-group col-md-4 mb-0">
-              <label for="productCode" class="form-label">Code</label>
-              <input type="text" class="form-control" id="productCode" v-model="product.code" required>
+            <div class="form-group col-md-6">
+              <label for="productCode" class="form-label">Product Code</label>
+              <input type="text" class="form-control" id="productCode" v-model="product.product_code" required>
             </div>
-            <div class="form-group col-md-4 mb-0">
-              <label for="productName" class="form-label">Product Name</label>
-              <input type="text" class="form-control" id="productName" v-model="product.name" required>
+            <div class="form-group col-md-6">
+              <label for="productName" class="form-label">Product Designation</label>
+              <input type="text" class="form-control" id="productName" v-model="product.designation" required>
             </div>
-            <div class="form-group col-md-4">
-                <div class="d-flex align-items-end">
-                    <img :src="previewImage || require('@/assets/img/image.png')" class="img-thumbnail" alt="" @click="chooseImage">
-                    <input type="file" @change="onFileChange" class="form-control-file" id="productImage" hidden>
-                </div>
-                <label for="productImage" class="form-label">Image </label>
-            </div>
-          </div>                              
-        <div class="form-group">
-          <label for="productDescription" class="form-label">Description</label>
-          <textarea class="form-control" id="productDescription" v-model="product.description" required></textarea>
-        </div>
+          </div>
         <div class="form-row">
-            <div class="col-md-4 mb-4">
+            <div class="form-group col-md-6">
               <label for="productsell_price" class="form-label"> Buying Price</label>
-              <input type="number" class="form-control" id="productsell_price" v-model="product.buying_prive" required>
+              <input type="number" class="form-control" step="0.01" id="productsell_price" v-model="product.prix_achat" required>
             </div>
-            <div class="col-md-4 mb-4">
+            <div class="form-group col-md-6">
               <label for="productsell_price" class="form-label">Selling price</label>
-              <input type="number" class="form-control" id="productsell_price" v-model="product.sell_price">
+              <input type="number" class="form-control" step="0.01" id="productsell_price" v-model="product.prix_vente">
             </div>
-            <div class="col-md-4 mb-4">
-                <label for="productQuantity" class="form-label">Quantity</label>
-                <input type="number" class="form-control" id="productQuantity" v-model="product.quantity" required>
-              </div>
         </div>
         <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="productDiscount" class="form-label">Discount</label>
-              <input type="number" class="form-control" id="productDiscount" v-model="product.discount">
-            </div>
-            <div class="form-group col-md-6">
-              <label for="productSubTotal" class="form-label">SubTotal</label>
-              <input type="number" class="form-control" id="productSubTotal" v-model="product.subtotal" required>
-            </div>
+          <div class="form-group col-md-6">
+            <label for="productQuantity" class="form-label">Quantity</label>
+            <input type="number" class="form-control" id="productQuantity" v-model="product.quantity" required>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="productDiscount" class="form-label">Discount</label>
+            <input type="number" class="form-control" id="productDiscount" v-model="product.discount">
+          </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="inputSupplier">Supplier</label>
-                <select id="inputSupplier" class="form-control custom-select">
-                        <option selected>Choose...</option>
-                        <option>...</option>
-                    </select>
+                <select id="inputSupplier" class="form-control custom-select"  v-model="product.supplier_id">
+                    <option selected value="">Choose...</option>
+                    <option v-for="supplier in suppliers.data" ::key="supplier.id" :value="supplier.id">{{ supplier.name }}</option>
+                    <option value=""> <router-link :to="{name:'AddSupplier'}"></router-link></option>
+                </select>
             </div>
             <div class="form-group col-md-6">
                 <label for="inputCategory">Category</label>
-                <select id="inputCategory" class="form-control custom-select">
-                        <option selected>Choose...</option>
-                        <option>...</option>
-                    </select>
+                <select id="inputCategory" class="form-control custom-select" v-model="product.product_type_id">
+                        <option selected value="">Choose...</option>
+                        <option v-for="type in productsType.data" :key="type.id" :value="type.id">{{type.type}}</option>
+                </select>
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
@@ -66,42 +53,46 @@
 </template>
 
 <script>
+  import {mapActions, mapGetters} from 'vuex';
     export default {
       name: 'ProductForm',
       props: {
         product: {
           type: Object,
           default: () => ({
-            name: '',
-            code: '',
-            description: '',
-            sell_price: '',
-            buying_price: '',
-            price: null,
-            quantity: null,
-            image: null
+            id:'',
+            designation: '',
+            product_code: '',
+            prix_vente: '',
+            prix_achat: '',
+            quantity: '',
+            discount:'',
+            supplier_id:'',
+            product_type_id: '',
+            supplier_id: '',
+            product_unit_id: null,
+            user_id:'',
           })
         }
       },
-      data() {
-        return {
-          previewImage: null
-        };
-      },
       methods: {
-        chooseImage() {
-          document.getElementById('productImage').click();
-        },
-        onFileChange(event) {
-          const file = event.target.files[0];
-          this.product.image = file;
-          const reader = new FileReader();
-          reader.onload = (event) => {
-            this.previewImage = event.target.result;
-          };
-          reader.readAsDataURL(file);
-        }
-      }
+        ...mapActions({
+          'importSuppliers': 'supplier/importSuppliers',
+          'importProductsType' : 'productType/importProductType'
+        }),
+      },
+      computed:{
+        ...mapGetters({
+          'suppliers':'supplier/getSuppliers',
+          'user': 'auth/user',
+          'productsType' : 'productType/getProductsType'
+        })
+      },
+      created() {
+        this.importSuppliers(this.user.id);
+        this.importProductsType();
+        this.product.user_id = this.user.id; 
+      },
     };
     </script>
     

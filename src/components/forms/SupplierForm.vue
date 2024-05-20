@@ -1,5 +1,6 @@
 <template lang="">
-    <form @submit.prevent="$emit('submit',supplier)">
+    <form @submit.prevent="$emit('submit', this.supplier)">
+        <input type="text" v-model="supplier.id" hidden>
         <div class="form-group ">
             <label for="supplierName" class="form-label">Supplier Name :</label>
             <input type="text" class="form-control" id="supplierName" v-model="supplier.name" required>
@@ -24,22 +25,22 @@
         </div>
         <div class="form-row">
             <div class="col-md-6 mb-3">
-                <label for="validationCustom03">State :</label>
-                <input type="text" class="form-control" id="validationCustom03" v-model="supplier.state" placeholder="State" required>
+                <label for="validationCustom03"> Country :</label>
+                <input type="text" class="form-control" id="validationCustom03" v-model="supplier.country" placeholder="Country" required>
                 <div class="invalid-feedback">
-                    Please provide a valid city.
+                    Please provide a valid Country.
                 </div>
             </div>
             <div class="col-md-3 mb-3">
                 <label for="validationCustom04">City :</label>
                 <input type="text" class="form-control" id="validationCustom04" v-model="supplier.city" placeholder="City" required>
                 <div class="invalid-feedback">
-                    Please provide a valid state.
+                    Please provide a valid City.
                 </div>
             </div>
             <div class="col-md-3 mb-3">
                 <label for="validationCustom05">Zip :</label>
-                <input type="text" class="form-control" id="validationCustom05" v-model="supplier.zipcode" placeholder="Zip" required>
+                <input type="text" class="form-control" id="validationCustom05" v-model="supplier.postal_code" placeholder="Zip" required>
                 <div class="invalid-feedback">
                     Please provide a valid zip.
                 </div>
@@ -49,22 +50,33 @@
     </form>
 </template>
 <script>
+import {mapGetters} from 'vuex';
 export default {
     name:'SupplierForm',
     props:{
         supplier:{
             type:Object,
             default: () => ({
+                id:'',
                 name:'',
                 address:'',
                 phone:'',
                 email:'',
                 fax:'',
-                zipcode:'',
+                postal_code:'',
                 city:'',
-                state:''
+                country:'',
+                user_id:''
             })
         }
+    },
+    computed:{
+        ...mapGetters({
+            'user': 'auth/user'
+        })
+    },
+    created() {
+        this.supplier.user_id = this.user.id;
     },
 }
 </script>

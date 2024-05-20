@@ -86,18 +86,6 @@ export default {
                 console.error(error);
             });
         },
-        getButtonClass(status) {
-            switch (status) {
-                case 'INSTOCK':
-                return 'btn-success';
-                case 'LOWSTOCK':
-                return 'btn-warning';
-                case 'OUTOFSTOCK':
-                return 'btn-danger';
-                default:
-                return '';
-            }
-        },
         processData(data) {
             const headers = data[0];
             const products = [];
@@ -107,22 +95,22 @@ export default {
 
                 // Check if the current row has only the designation field filled
                 if (row.filter(field => field !== "").length === 1 && row[headers.indexOf("Désignation")] !== "") {
-                // Find the last product in the products array
-                const lastProductIndex = products.length - 1;
+                    // Find the last product in the products array
+                    const lastProductIndex = products.length - 1;
 
-                // Make sure the last product exists before updating it
-                if (lastProductIndex >= 0) {
-                    const lastProduct = products[lastProductIndex];
-                    const lastDesignation = lastProduct["Désignation"];
-                    lastProduct["Désignation"] = lastDesignation + ' - ' + row[headers.indexOf("Désignation")];
-                }
+                    // Make sure the last product exists before updating it
+                    if (lastProductIndex >= 0) {
+                        const lastProduct = products[lastProductIndex];
+                        const lastDesignation = lastProduct["Désignation"];
+                        lastProduct["Désignation"] = lastDesignation + ' - ' + row[headers.indexOf("Désignation")];
+                    }
                 } else if (row.some(field => field !== "")) {
-                // Create a new product object and push it to the products array
-                const product = {};
-                headers.forEach((header, index) => {
-                    product[header] = row[index];
-                });
-                products.push(product);
+                    // Create a new product object and push it to the products array
+                    const product = {};
+                    headers.forEach((header, index) => {
+                        product[header] = row[index];
+                    });
+                    products.push(product);
                 }
             }
             return products;
@@ -135,26 +123,18 @@ export default {
             for (const product of products) {
                 // Create a new object with the mapped properties
                 const mappedProduct = {
-                    code: product['Code Article'],
-                    name: product.Désignation,
-                    description: '',
-                    image: '',
-                    price: parseFloat(product['PXUnit.']),
-                    category: '',
+                    product_code: product['Code Article'],
+                    designation: product.Désignation,
+                    prix_achat: parseFloat(product['PXUnit.']),
                     quantity: parseFloat(product.Qté),
-                    inventoryStatus: 'INSTOCK',
                     discount : parseFloat(product.Remise),
-                    subtotal:parseFloat(product['Sous-Total']),
-                    rating: 0
                 };
 
                 // Add the mapped product to the array
                 mappedProducts.push(mappedProduct);
             }
-
             // Return the array of mapped products
             return mappedProducts;
-
         }
     }
 }

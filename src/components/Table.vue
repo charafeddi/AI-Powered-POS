@@ -14,23 +14,34 @@
                 </div>                          
                 <div class="card-body">
                     <DataTable :value="product" :filters="filters" filterDisplay="menu" :filterBy="filterBy" tableStyle="min-width: 50rem">
-                        <Column field="code" header="Code"></Column>
-                        <Column field="name" header="Name"></Column>
+                        <Column field="product_code" header="Code"></Column>
+                        <Column field="designation" header="Name"></Column>
                         <Column field="quantity" header="Quantity"></Column>
-                        <Column field="price" header="Price"></Column>
-                        <Column field="category" header="Category"></Column>
-                        <Column field="discount" header="Discount"></Column>
+                        <Column field="prix_achat" header="Price"></Column>
+                        <Column field="discount" header="Discount">
+                            <template #body="slotProps">
+                                <span>
+                                    {{ slotProps.data.discount ? slotProps.data.discount:0 }}
+                                </span>
+                            </template>
+                        </Column>
                         <Column  header="Status">
                             <template #body="slotProps">
-                                <button class="btn" :class="getButtonClass(slotProps.data.inventoryStatus)">
-                                    {{slotProps.data.inventoryStatus}}
+                                <button class="btn" :class="getButtonClass(inventoryStatus(slotProps.data.quantity))">
+                                    {{inventoryStatus(slotProps.data.quantity)}}
                                 </button>
                             </template>
                         </Column>
-                        <Column field="subtotal" header="SubTotal"></Column>
+                        <Column header="SubTotal">
+                            <template #body="slotProps">
+                                <span>
+                                    {{subTotal(slotProps.data.quantity,slotProps.data.prix_achat ,slotProps.data.discount)}}
+                                </span>
+                            </template>
+                        </Column>
                         <Column header="Action">
                             <template #body="slotProps">
-                                <button @click="deleteProduct(slotProps.data.id)" class="btn btn-danger mr-2"><i class="fa-regular fa-trash-can"></i></button>
+                                <button @click="deleteProduct(slotProps.data.id)" class="btn btn-danger mr-2"><i class="fa-regular fa-trash-can"></i></button>  &nbsp;
                                 <router-link :to="{name: 'UpdateProduct', params: {id: slotProps.data.id}}" class="btn btn-primary"><i class="fa-regular fa-pen-to-square"></i></router-link>
                             </template>
                         </Column>
@@ -38,7 +49,7 @@
                             <tr>
                               <td class="text-right font-weight-bold">Total:</td>
                               <td colspan="6"></td>
-                              <td class="font-weight-bold">{{ getTotalSubtotal }}</td>
+                              <td class="font-weight-bold">{{ total }}</td>
                             </tr>
                           </template>                          
                     </DataTable>
@@ -62,7 +73,8 @@ export default {
             filters: {
                 'global': { value: null, matchMode: 'contains' }
             },
-            product: this.arrayProp,
+            product: this.arrayProp.data,
+            total:  this.arrayProp.total.toFixed(2),
         }
     },
     props:{
@@ -89,6 +101,7 @@ export default {
                 product.inventoryStatus.toLowerCase().includes(filter['global'].value.toLowerCase())
             );
             }
+            
             return true;
         },
         clearFilter() {
@@ -110,17 +123,24 @@ export default {
                 return '';
             }
         },
-        computed: {
-            getTotalSubtotal() {
-                let total = 0;
-                for (let i = 0; i < this.product.length; i++) {
-                    total += this.product[i].subtotal;
-                }
-                console.log('is it in ');
-                return total.toFixed(2);
+        inventoryStatus(quantity){
+            if (quantity>=100) {
+                return 'INSTOCK' ;
+            }else if  (quantity>0){
+                return 'LOWSTOCK' ;
+            }else{
+                return 'OUTOFSTOCK' ;
             }
+        },
+        subTotal(quantity,prix_achat,discount){
+            if (discount === null){
+                return (quantity * prix_achat).toFixed(2) ; 
+            }
+
+            return (quantity * prix_achat - (prix_achat * quantity * discount)).toFixed(2); 
         }
     },
+
 }
 </script>
 <style>
