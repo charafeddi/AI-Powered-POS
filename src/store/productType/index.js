@@ -14,9 +14,9 @@ export default{
         getProductsType(state){
             return state.productsType;
         },
-       
     },
     actions:{
+        // todo: fix later need to add the user to only import the product type related to the user
         async importProductType({commit}){
             try {
                 const response = await axios.get('ProductType');

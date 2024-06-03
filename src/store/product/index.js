@@ -49,7 +49,7 @@ export default {
         },
         async AddProduct(_, product){
             try {
-                return await axios.post(`products`, product);                
+                return await axios.post(`products`, product);
             } catch (error) {
                 console.log(error);
             }

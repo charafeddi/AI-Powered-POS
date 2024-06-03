@@ -52,11 +52,11 @@ export default {
           })      
         } else {
           // Handle the error or display a message to the user
-          console.error("Failed to add supplier:", response);
+          console.error("Failed to update product:", response);
         }
         }).catch((error) => {
             // Handle the error or display a message to the user
-            console.error("Error while adding supplier:", error);   
+            console.error("Error while update product:", error);   
         });
       console.log('Form submitted:', product);
     }

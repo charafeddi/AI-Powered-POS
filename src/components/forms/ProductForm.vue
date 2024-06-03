@@ -36,7 +36,7 @@
                 <label for="inputSupplier">Supplier</label>
                 <select id="inputSupplier" class="form-control custom-select"  v-model="product.supplier_id">
                     <option selected value="">Choose...</option>
-                    <option v-for="supplier in suppliers.data" ::key="supplier.id" :value="supplier.id">{{ supplier.name }}</option>
+                    <option v-for="supplier in suppliers.data" :key="supplier.id" :value="supplier.id">{{ supplier.name }}</option>
                     <option value=""> <router-link :to="{name:'AddSupplier'}"></router-link></option>
                 </select>
             </div>
@@ -44,7 +44,7 @@
                 <label for="inputCategory">Category</label>
                 <select id="inputCategory" class="form-control custom-select" v-model="product.product_type_id">
                         <option selected value="">Choose...</option>
-                        <option v-for="type in productsType.data" :key="type.id" :value="type.id">{{type.type}}</option>
+                        <option v-for=" Ptype in productsType.data " :key="Ptype.id" :value="Ptype.id">{{Ptype.type}}</option>
                 </select>
             </div>
         </div>

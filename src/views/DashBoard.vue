@@ -9,7 +9,7 @@
             </nav>
             <div class="page-options">
                 <a href="#" class="btn btn-secondary">Settings</a>
-                <a href="#" class="btn btn-primary">Add Sale</a>
+                <router-link :to="{name:'SalesAdd'}" class="btn btn-primary">Add Sale</router-link>
             </div>
         </div>
         <div class="main-wrapper">

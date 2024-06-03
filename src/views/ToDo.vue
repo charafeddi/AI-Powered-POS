@@ -20,7 +20,16 @@
                                           Create New Task
                                     </button>
                                      <!-- Task Modal -->
-                                    <div v-if="modalOpen" class="modal fade show"   id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="display: block;">
+                                    <div 
+                                        v-if="modalOpen" 
+                                        class="modal fade show"   
+                                        id="exampleModalCenter" 
+                                        tabindex="-1" 
+                                        role="dialog" 
+                                        aria-labelledby="exampleModalCenterTitle" 
+                                        aria-hidden="true" 
+                                        style="display: block;"
+                                    >
                                         <div class="modal-dialog modal-dialog-centered" role="document" >
                                             <div class="modal-content">
                                                 <div class="modal-header">

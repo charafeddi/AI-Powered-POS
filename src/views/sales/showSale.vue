@@ -23,7 +23,6 @@ export default {
     name: 'showSale',
     data() {
         return {
-            editable:true,
             loading: true,
             showitem: false,
         }

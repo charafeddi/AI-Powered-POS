@@ -1,4 +1,4 @@
-<template lang="">
+<template>
     <div class="row">
         <div class="col">
             <div class="card">
@@ -136,8 +136,7 @@ export default {
             if (discount === null){
                 return (quantity * prix_achat).toFixed(2) ; 
             }
-
-            return (quantity * prix_achat - (prix_achat * quantity * discount)).toFixed(2); 
+            return (quantity * prix_achat - (prix_achat * quantity * discount/100)).toFixed(2); 
         }
     },
 

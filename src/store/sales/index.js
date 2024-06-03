@@ -40,6 +40,20 @@ export default{
             } catch (error) {
                 console.log(error);
             }
+        },
+        async UpdateSale(_, sales){
+            try {
+                return await axios.put(`sales/${sales.id}`,sales);
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async addSales(_, sales){
+            try {
+                return await axios.post(`sales/${sales.id}`,sales);
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 }
