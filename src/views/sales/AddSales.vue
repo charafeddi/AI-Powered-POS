@@ -75,7 +75,6 @@ export default {
             console.log("Console saleinf in Addsale :", saleinf);
         },
         save(){
-
             const object= {
                 'client_id': parseInt(this.ClientForm.id),
                 'total_amount': parseFloat(this.saleinf.total_amount),

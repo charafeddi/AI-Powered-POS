@@ -24,7 +24,7 @@
                             </div>
                         </div> 
                         <div class="card-body">
-                            <DataTable :value="suppliers" :fliters="filters" filterDisplay="menu" :filterBy="filterBy" tableStyle="min-width: 50rem">
+                            <DataTable :value="suppliersData.data" :fliters="filters" filterDisplay="menu" :filterBy="filterBy" tableStyle="min-width: 50rem">
                                 <Column field="name" header="Name"></Column>
                                 <Column field="email" header="Email"></Column>
                                 <Column field="phone" header="Phone"></Column>
@@ -33,6 +33,7 @@
                                 <Column header="Action">
                                     <template #body="slotProps">
                                         <router-link :to="{name: 'UpdateSupplier', params:{ id: slotProps.data.id}}" class="btn btn-success"><i class="fa-regular fa-pen-to-square"></i></router-link>
+                                        &nbsp;
                                         <button @click="deleteSupplier(slotProps.data.id)" class="btn btn-danger"><i class="fa-regular fa-trash-can"></i> </button>
                                     </template>
                                 </Column>
@@ -92,7 +93,6 @@ export default {
         this.importSuppliers(this.id).finally(() => {
             this.loading = false;
         });
-        this.suppliers = this.suppliersData.data;
     },
 }
 </script>

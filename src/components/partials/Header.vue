@@ -14,10 +14,7 @@
                     <span>{{user.name}}</span><i class="material-icons dropdown-icon">keyboard_arrow_down</i>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Calendar<span class="badge badge-pill badge-info float-right">2</span></a>
-                    <a class="dropdown-item" href="#">Settings &amp Privacy</a>
-                    <a class="dropdown-item" href="#">Switch Account</a>
-                    <div class="dropdown-divider"></div>
+                    <!-- <div class="dropdown-divider"></div> -->
                     <a class="dropdown-item" @click="logOut()" href="#">Log out</a>
                 </div>
             </li>
@@ -40,7 +37,7 @@
                     <a href="#" class="nav-link">Projects</a>
                 </li> 
                 <li class="nav-item">
-                    <router-link :to="{name:ToDo, params:{id:user.id}}" class="nav-link">Tasks</router-link>
+                    <router-link :to="{name:'ToDo', params:{id:user.id}}" class="nav-link">Tasks</router-link>
                 </li>
             </ul>
         </div>

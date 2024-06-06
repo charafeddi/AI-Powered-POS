@@ -1,6 +1,6 @@
 <template >
   <div class="page-sidebar">
-    <div class="logo-box"><a href="#" class="logo-text">Connect</a><a href="#" id="sidebar-close"><i class="material-icons">close</i></a> <a href="#" id="sidebar-state"><i class="material-icons">adjust</i><i class="material-icons compact-sidebar-icon">panorama_fish_eye</i></a></div>
+    <div class="logo-box"><router-link :to='{ name : "DashBoard"}' class="logo-text">Connect</router-link><a href="#" id="sidebar-close"><i class="material-icons">close</i></a> <a href="#" id="sidebar-state"><i class="material-icons">adjust</i><i class="material-icons compact-sidebar-icon">panorama_fish_eye</i></a></div>
         <PerfectScrollbar >
             <div class="page-sidebar-inner">
                 <ul class="accordion-menu">
@@ -8,18 +8,18 @@
                     <li >
                         <router-link :to='{ name : "DashBoard"}' active-class="activelink"> <i class="material-icons-outlined">dashboard</i>Dashboard</router-link>
                     </li>
-                    <li >
+                    <!-- <li >
                         <a href="#"><i class="material-icons-outlined">inbox</i>Mailbox</a>
                     </li>
                     <li>
                         <a href="#"><i class="material-icons-outlined">account_circle</i>Profile</a>
-                    </li>
+                    </li> -->
                     <li>
                         <router-link :to="{name:'Product', params:{id: user.id}}" active-class="activelink"><i class="material-icons">inventory</i>Product</router-link>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="#" active-class="activelink"><i class="material-icons-outlined">calendar_today</i>Calendar</a>
-                    </li>
+                    </li> -->
                     <li>
                         <router-link :to="{name :'ToDo', params:{id: user.id}}" active-class="activelink"><i class="material-icons">done</i>Todo</router-link>
                     </li>
@@ -39,12 +39,12 @@
                     <li>
                         <router-link :to="{name:'SalesList', params:{id:user.id}}" active-class="activelink"><i class="material-icons">shopping_basket</i>Sales</router-link>
                     </li>
-                    <li>
-                        <a href="#" active-class="activelink"><i class="material-icons">bar_chart</i>Analytics</a>
+                   <li>
+                        <a class="dropdown-item" @click="logOut()" href="#"><i class="material-icons">input</i>Log out</a>
                     </li>
-                    <li>
+                     <!-- <li>
                         <a href="#"><i class="material-icons">input</i>Forms</a>
-                    </li>
+                    </li> 
                     <li class="sidebar-title">
                         Other
                     </li>
@@ -70,7 +70,7 @@
                     </li>
                     <li>
                         <a href="#"><i class="material-icons">access_time</i>Change Log</a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </PerfectScrollbar>
@@ -79,7 +79,7 @@
 <script>
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import '@/assets/css/perfect-scrollbar.css';
-import {mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 export default {
   name: 'Sidebar',
   data() {
@@ -96,8 +96,16 @@ export default {
     })
   },
   methods: {
+    ...mapActions({
+        'signOut': 'auth/signOut'
+    }),
     toggleSubMenu() {
       this.isSubMenuExpanded = !this.isSubMenuExpanded;
+    },
+    logOut(){
+      this.signOut().then(()=>{
+        this.$router.replace({name: 'Signin'});
+      });
     }
   },
 };

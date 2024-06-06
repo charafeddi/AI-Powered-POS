@@ -90,7 +90,7 @@
                 <input type="text" class="form-control" v-model="ProductForm.product_code" placeholder="Product Code" required>
                 </div>
                 <div class="form-group">
-                <input type="text" class="form-control" v-model="ProductForm.designation" placeholder="Designation" required readonly>
+                <input type="text" class="form-control" v-model="ProductForm.designation" placeholder="Designation" required>
                 </div>
                 <div class="form-group">
                 <input type="number" class="form-control" step="0.01" v-model="ProductForm.prix_achat" placeholder="Price" required >
@@ -224,10 +224,11 @@ export default {
             }).then((response) => {
                 if (response.status === 201) {
                     const user = store.getters['auth/user'];
+                    console.log(user);
                     this.$router.push({
                         name: 'Product',
                         params: {
-                            id: user ? user.id : 'nothing'
+                            id: user.id 
                         }
                     });
                 } else {

@@ -274,6 +274,7 @@ export default {
       this.items.push(this.taskForm);
       this.saleinf.total_amount = this.total;
       this.emitItems();
+      this.emitSaleinf();
       this.showModal();
     },
     updateTask() {
@@ -289,6 +290,7 @@ export default {
       this.items.splice(index, 1);
       this.saleinf.total_amount = this.total;
       this.emitItems();
+      this.emitSaleinf();
     },
     updateItem(index, property, value) {
       if (value<0 ) {
@@ -305,6 +307,7 @@ export default {
       }
       this.saleinf.total_amount = this.total;
       this.emitItems();
+      this.emitSaleinf();
       console.log('product items', this.items);
     },
     updatesaleInf(property, value) {
@@ -315,6 +318,7 @@ export default {
           this.saleinf[property] = value;
           console.log('sale inf', this.saleinf);
           this.emitSaleinf();
+          this.emitItems();
         }
     },
     filterProducts() {
