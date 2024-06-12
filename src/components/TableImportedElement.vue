@@ -123,8 +123,9 @@
 <script>
 import DataTable from "primevue/datatable/DataTable.vue";
 import Column from "primevue/column/Column.vue";
-import { ref, watch, onMounted } from "vue";
-import { useStore } from "vuex";
+import { useRouter } from 'vue-router';
+import { ref, watch, onMounted } from 'vue';
+import { useStore } from 'vuex';
 
 export default {
     name: "TableImportedElement",
@@ -140,6 +141,7 @@ export default {
     },
     setup(props) {
         const store = useStore();
+        const router = useRouter();
         const products = ref([...props.arrayProp]);
         const filters = ref({
             global: { value: null, matchMode: "contains" },
@@ -224,8 +226,7 @@ export default {
             }).then((response) => {
                 if (response.status === 201) {
                     const user = store.getters['auth/user'];
-                    console.log(user);
-                    this.$router.push({
+                    router.push({
                         name: 'Product',
                         params: {
                             id: user.id 

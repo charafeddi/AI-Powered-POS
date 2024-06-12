@@ -43,7 +43,7 @@ export default{
         },
         async UpdateSale(_, sales){
             try {
-                return await axios.put(`sales/${sales.user_id}`,sales);
+                return await axios.put(`sales/${sales.id}`,sales);
             } catch (error) {
                 console.log(error);
             }

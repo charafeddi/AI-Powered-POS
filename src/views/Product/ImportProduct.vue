@@ -1,4 +1,4 @@
-<template lang="">
+<template>
     <div class="page-content d-flex justify-content-center align-items-center">
       <div class="main-wrapper">
         <div v-if="loading" class="row">
@@ -61,8 +61,7 @@
             </div>  
         </div>
     </div>
-
-  </template>
+</template>
   
   <script>
   import axios from "axios";

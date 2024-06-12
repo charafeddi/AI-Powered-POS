@@ -7,7 +7,7 @@ import customers from './customers';
 import sales from './sales';
 import todo from './todo';
 import analytics from './analytics';
-
+import mail from './mail';
 export default createStore({
     state:{
 
@@ -27,6 +27,7 @@ export default createStore({
         customers,
         sales,
         todo,
-        analytics
+        analytics,
+        mail
     }
 })

@@ -8,10 +8,10 @@
                     <li >
                         <router-link :to='{ name : "DashBoard"}' active-class="activelink"> <i class="material-icons-outlined">dashboard</i>Dashboard</router-link>
                     </li>
-                    <!-- <li >
-                        <a href="#"><i class="material-icons-outlined">inbox</i>Mailbox</a>
+                    <li >
+                        <router-link :to="{name:'Mail', params:{id:user.id}}" active-class="activelink" ><i class="material-icons-outlined">inbox</i>Mailbox</router-link>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="#"><i class="material-icons-outlined">account_circle</i>Profile</a>
                     </li> -->
                     <li>

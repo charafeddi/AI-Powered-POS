@@ -37,8 +37,13 @@
               <Footer/>
               <!-- / Footer -->
         </div>
+        <!-- Compose Mail -->
+        <ComposeMail />
+
         <!-- / page container -->
     </div>
+    <div class="mailbox-compose-overlay"></div>
+    <div class="mailbox-item-overlay"></div>
   </div>
 </template>
 
@@ -47,6 +52,8 @@ import SideBar from './components/partials/SideBar.vue';
 import Header from './components/partials/Header.vue';
 import Footer from './components/partials/Footer.vue';
 import LoadEvent from './components/partials/LoadEvent.vue';
+import ComposeMail from './components/mail-partials/ComposeMail.vue';
+import MailItem from './components/mail-partials/MailItem.vue';
 import {mapGetters} from 'vuex';
 export default {
   name: 'App',
@@ -55,6 +62,8 @@ export default {
     Header,
     Footer,
     LoadEvent,
+    ComposeMail,
+    MailItem
   },
   computed: {
     ...mapGetters({

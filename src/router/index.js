@@ -31,6 +31,8 @@ import SalesAdd from '../views/sales/AddSales.vue'
 import showSale from '../views/sales/showSale.vue'
 import SalesUpdate from '../views/sales/UpdateSales.vue'
 
+//mail
+import Mail from '../views/mails/MailSystem.vue'
 //Pages Not Found
 import NotFound from '../views/NotFound'
 
@@ -235,6 +237,18 @@ const routes =[
         path:'/Sales/show/:id',
         name:'showSale',
         component: showSale,
+        props:true,
+        beforeEnter: (to, from, next) => {
+            if (!store.getters['auth/authenticated']) {
+                return next({name: 'Signin'})
+            }
+            next()
+        }
+    },
+    {
+        path:'/mail/:id',
+        name:'Mail',
+        component: Mail,
         props:true,
         beforeEnter: (to, from, next) => {
             if (!store.getters['auth/authenticated']) {
