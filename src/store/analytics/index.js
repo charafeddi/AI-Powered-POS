@@ -5,6 +5,7 @@ export default{
     state:{
         Earnings:null,
         PopularProduct:[],
+        Most10PopularProduct:[],
         totalSales:null,
         netProfit: null,
         SupplierTransaction :[],
@@ -17,6 +18,9 @@ export default{
         },
         setPopularProduct(state, PopularProduct){
             state.PopularProduct = PopularProduct;
+        },
+        set10MostPopularProduct(state, Most10PopularProduct){
+            state.Most10PopularProduct = Most10PopularProduct;
         },
         setTotalSales(state, totalSales){
             state.totalSales = totalSales
@@ -40,6 +44,9 @@ export default{
         },
         getPopularProduct(state){
             return state.PopularProduct;
+        },
+        get10MostPopularProduct(state){
+            return state.Most10PopularProduct;
         },
         getTotalSales(state){
             return state.totalSales;
@@ -78,6 +85,14 @@ export default{
                     }
                 })
                 commit('setPopularProduct', response);
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async Import10mostPopularProduct({commit}, id){
+            try {
+                const response = await axios.get(`/analytics/${id}/getTop10PopularProducts`)
+                commit('set10MostPopularProduct', response);
             } catch (error) {
                 console.log(error);
             }

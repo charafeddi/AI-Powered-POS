@@ -106,8 +106,7 @@
         formData.append("file", file.value);
         openModel.value = true;
         
-        axios
-          .post("http://127.0.0.1:5002/", formData, {
+        axios.post("http://127.0.0.1:5002/", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },

@@ -39,6 +39,9 @@
                     <li>
                         <router-link :to="{name:'SalesList', params:{id:user.id}}" active-class="activelink"><i class="material-icons">shopping_basket</i>Sales</router-link>
                     </li>
+                    <li>
+                        <router-link :to="{name:'Analytics', params:{id:user.id }}" active-class="activelink"><i class="material-icons">query_stats</i> Analytics</router-link>
+                    </li>
                    <li>
                         <a class="dropdown-item" @click="logOut()" href="#"><i class="material-icons">input</i>Log out</a>
                     </li>

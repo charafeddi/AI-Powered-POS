@@ -35,6 +35,7 @@ import SalesUpdate from '../views/sales/UpdateSales.vue'
 import Mail from '../views/mails/MailSystem.vue'
 //Pages Not Found
 import NotFound from '../views/NotFound'
+import Analytics from '@/views/Analytics/Analytics.vue'
 
 const routes =[
     {
@@ -262,6 +263,20 @@ const routes =[
         component:NotFound,
         meta:{
             layout:"EmptyLayout"
+        }
+    },
+    {
+        path:'/Analytics/:id',
+        name:'Analytics',
+        component:Analytics,
+        props:true,
+        beforeEnter:(to, from, next) => {
+            if(!store.getters['auth/authenticated']) {
+                return next({
+                    name: 'Signin'
+                })
+            }
+            next()
         }
     }
 ]
